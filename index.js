@@ -3,15 +3,9 @@ class Game {
 	lines = 0;
 	level = 0;
 	playfield = this.createPlayfield();
-	activePiece = {
-		x: 0,
-		y: 0,
-		blocks: [
-		 [0, 1, 0],	
-		 [1, 1, 1],	
-		 [0, 0, 0]
-		]
-	};
+	activePiece = this.createPiece();
+
+	nextPiece = this.createPiece();
 
 	getState() {
 		const pieceY = this.activePiece.y;
@@ -49,7 +43,21 @@ class Game {
 			}
 		}
 
-		return playfield;					//17:14
+		return playfield;					
+	}
+
+	createPiece() {
+	 
+
+		return {
+		x: 0,
+		y: 0,
+		blocks: [
+		 [0, 1, 0],	
+		 [1, 1, 1],	
+		 [0, 0, 0]
+		]
+		}; 
 	}
 
 	movePieceLeft() {
@@ -74,6 +82,7 @@ class Game {
 		if (this.hasCollision()) {
 			this.activePiece.y -= 1;
 			this.lockPiece();
+			this.updatePieces();
 		}
 	} 
 
@@ -140,6 +149,11 @@ class Game {
 				}
 			}
 		}
+	}
+
+	updatePieces() {
+		this.activePiece = this.nextPiece;
+		this.activePiece = this.createPiece();
 	}
 };
 
@@ -220,4 +234,4 @@ document.addEventListener('keydown', event => {
 			view.render(game.getState());
 			break;
 	};
-});
+}); 

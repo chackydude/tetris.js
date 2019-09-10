@@ -380,4 +380,4 @@ document.addEventListener('keydown', event => {
 	};
 }); 
 
-view.render(game.getState()); //5:38
+view.render(game.getState()); //5:38 //

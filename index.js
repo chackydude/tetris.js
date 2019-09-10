@@ -258,7 +258,7 @@ class Game {
 
 	updatePieces() {
 		this.activePiece = this.nextPiece;
-		this.activePiece = this.createPiece();
+		this.nextPiece = this.createPiece();
 	}
 };
 
@@ -323,7 +323,23 @@ class View {
 		this.context.fillText(`Lines: ${lines}`, 0, 24);
 		this.context.fillText(`Level: ${level}`, 0, 48);
 		this.context.fillText('Next', 0, 96);
-	}
+
+		for (let y = 0; y < nextPiece.blocks.length; y++) {
+			for (let x = 0; x < nextPiece.blocks[y].length; x++) {
+				const block = nextPiece.blocks[y][x];
+
+				if (block) {
+					this.renderBlock(
+						x * this.blockWidth,
+						y * this.blockHeight,
+						this.blockWidth,
+						this.blockHeight,
+						View.colors[block]
+					);
+				};
+			};
+		};
+	};
 
 	renderBlock(x, y, width, height, color) {
 		this.context.fillStyle = color;

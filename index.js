@@ -6,7 +6,7 @@ class Game {
 		'4': 1200
 	};
 	score = 0;
-	lines = 19;
+	lines = 0;
 	playfield = this.createPlayfield();
 	activePiece = this.createPiece();
 
@@ -38,6 +38,10 @@ class Game {
 				}
 
 		return {
+			score: this.score,
+			level: this.level,
+			lines: this.lines,
+			nextPiece: this.nextPiece,
 			playfield
 		};
 	}
@@ -285,16 +289,17 @@ class View {
 		this.element.appendChild(this.canvas);
 	}
 
-	render({playfield}) {
+	render(state) {
 		this.clearScreen();
-		this.renderPlayfield(playfield);	
+		this.renderPlayfield(state);	
+		this.renderPanel(state)
 	}
 	
 	clearScreen() {
 		 this.context.clearRect(0, 0, this.width, this.height);
 	}
 
-	renderPlayfield(playfield) {
+	renderPlayfield({ playfield} ) {
 	for (let y = 0; y < playfield.length; y++) {
 				const line = playfield[y];
 
@@ -306,6 +311,18 @@ class View {
 				}
 			}
 		}
+	}
+
+	renderPanel({ level, score, lines, nextPiece }) {
+		this.context.textAlign = 'start';
+		this.context.textBaseline = 'top';
+		this.context.fillStyle = 'white';
+		this.context.font = '14px "Press start 2P"';
+		
+		this.context.fillText(`Score: ${score}`, 0, 0);	
+		this.context.fillText(`Lines: ${lines}`, 0, 24);
+		this.context.fillText(`Level: ${level}`, 0, 48);
+		this.context.fillText('Next', 0, 96);
 	}
 
 	renderBlock(x, y, width, height, color) {
@@ -346,3 +363,5 @@ document.addEventListener('keydown', event => {
 			break;
 	};
 }); 
+
+view.render(game.getState()); //5:38

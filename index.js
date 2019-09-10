@@ -302,7 +302,7 @@ class View {
 		this.element.appendChild(this.canvas);
 	}
 
-	render(state) {
+	renderMainScreen(state) {
 		this.clearScreen();
 		this.renderPlayfield(state);	
 		this.renderPanel(state)
@@ -420,21 +420,21 @@ document.addEventListener('keydown', event => {
 	switch (event.keyCode) {
 		case 37: // Левая стрелка
 			game.movePieceLeft();
-			view.render(game.getState());
+			view.renderMainScreen(game.getState());
 			break;
 		case 38: //	Верхняя стрелка
 			game.rotatePiece();
-			view.render(game.getState());
+			view.renderMainScreen(game.getState());
 			break;
 	    case 39: // Правая стрелка
 			game.movePieceRight();
-			view.render(game.getState());
+			view.renderMainScreen(game.getState());
 			break;
 		case 40: // Нижняя стрелка
 			game.movePieceDown();
-			view.render(game.getState());
+			view.renderMainScreen(game.getState());
 			break;
 	};
 }); 
 
-view.render(game.getState());
+view.renderMainScreen(game.getState());

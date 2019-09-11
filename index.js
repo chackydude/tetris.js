@@ -538,7 +538,7 @@ const controller = new Controller(game, view);
 
 window.game = game;
 window.view = view;
-window.controller = controller; //12:48
+window.controller = controller; 
 
  
 

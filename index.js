@@ -5,12 +5,10 @@ class Game {
 		'3': 300,
 		'4': 1200
 	};
-	score = 0;
-	lines = 0;
-	playfield = this.createPlayfield();
-	activePiece = this.createPiece();
 
-	nextPiece = this.createPiece();
+	constructor() {
+		this.reset();
+	}
 
 	get level() {
 		return Math.floor(this.lines * 0.1); 
@@ -42,8 +40,18 @@ class Game {
 			level: this.level,
 			lines: this.lines,
 			nextPiece: this.nextPiece,
-			playfield
+			playfield,
+			isGameOver: this.topOut
 		};
+	}
+
+	reset() {
+		this.score = 0;
+		this.lines = 0;
+		this.topOut = false;
+		this.playfield = this.createPlayfield();
+		this.activePiece = this.createPiece();
+		this.nextPiece = this.createPiece();
 	}
 
 	createPlayfield() {
@@ -143,6 +151,8 @@ class Game {
 	}
 
 	movePieceDown() {
+		if (this.topOut) return;
+
 		this.activePiece.y += 1;
 
 		if (this.hasCollision()) {
@@ -151,6 +161,10 @@ class Game {
 			const clearedLines = this.clearLines();
 			this.updateScore(clearedLines);
 			this.updatePieces();
+		}
+
+		if (this.hasCollision()) {
+			this.topOut = true;
 		}
 	} 
 
@@ -322,7 +336,7 @@ class View {
 
 	renderPauseScreen() {
 
-		this.context.fillStyle = 'rgba(0, 0, 0, 0, 75)';
+		this.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
 		this.context.fillRect(0, 0, this.width, this.height);
 
 		this.context.fillStyle = 'white';
@@ -335,7 +349,7 @@ class View {
 	renderEndScreen({score}) {
 		this.clearScreen();
 
-		this.context.fillStyle = 'rgba(0, 0, 0, 0, 75)';
+		this.context.fillStyle = 'rgba(0, 0, 0, 0.75)';
 		this.context.fillRect(0, 0, this.width, this.height);
 		this.context.fillStyle = 'white';
 		this.context.font = '18px "Press Start 2P"';
@@ -343,6 +357,7 @@ class View {
 		this.context.textBaseline = 'middle';
 		this.context.fillText('GAME OVER', this.width / 2, this.height / 2 - 48);
 		this.context.fillText(`Score: ${score}`, this.width / 2, this.height / 2);
+		this.context.fillText('Press ENTER to Restart', this.width / 2, this.height / 2 + 48);
 	}
 
 	renderPlayfield({ playfield} ) {
@@ -408,33 +423,122 @@ class View {
 	}
 }
 
+class Controller {
+	constructor(game, view) {
+		this.game = game;
+		this.view = view;
+		this.isPlaying = false;
+		this.intervalId = null;
+
+		document.addEventListener('keydown', this.handleKeydown.bind(this));
+		document.addEventListener('keyup', this.handleKeyup.bind(this));
+
+		this.view.renderStartScreen();
+	}
+
+	update() {
+		this.game.movePieceDown();
+		this.updateView();
+	}
+
+	play() {
+		this.isPlaying = true;
+		this.startTimer();
+		this.updateView();
+	}
+
+	pause() {
+		this.isPlaying = false;
+		this.stopTimer();
+		this.updateView();
+	}
+
+	reset() {
+		this.game.reset();
+		this.play();
+
+	}
+
+	updateView() {
+		const state = this.game.getState();
+
+		if (state.isGameOver) {
+			this.view.renderEndScreen(state);
+		} else if  (!this.isPlaying) {
+			this.view.renderPauseScreen();
+		} else {
+			this.view.renderMainScreen(state);
+		}
+	}
+
+	startTimer() {
+		const speed = 1000 - this.game.getState().level * 100;
+
+			if (!this.intervalId) {
+				this.intervalId = setInterval(() => {
+				this.update();
+			}, speed > 0 ? speed : 100);
+		}
+	}
+
+	stopTimer() {
+			if (this.intervalId) {
+				clearInterval(this.intervalId);
+				this.intervalId = null;
+			}
+	}
+
+	handleKeydown(event) {
+		const state = this.game.getState();
+
+		switch (event.keyCode) {
+				case 13:// Enter
+					if (state.isGameOver) {
+						this.reset();
+					} else if (this.isPlaying) {
+						this.pause();
+					} else {
+						this.play();
+					}
+					break;
+				case 37: // Левая стрелка
+					this.game.movePieceLeft();
+					this.updateView();
+					break;
+				case 38: //	Верхняя стрелка
+					this.game.rotatePiece();
+					this.updateView();
+					break;
+			    case 39: // Правая стрелка
+					this.game.movePieceRight();
+					this.updateView();
+					break;
+				case 40: // Нижняя стрелка
+					this.stopTimer();
+					this.game.movePieceDown();
+					this.updateView();
+					break;
+		};
+	}
+
+	handleKeyup(event) {
+		switch (event.keyCode) {
+				case 40: // Нижняя стрелка
+					this.startTimer();	
+					break;
+		}
+	}
+} 
+
 const root = document.querySelector('#root');
 
 const game = new Game();
 const view = new View(root, 480, 640, 20, 10);
+const controller = new Controller(game, view);
 
 window.game = game;
 window.view = view;
+window.controller = controller; //12:48
 
-document.addEventListener('keydown', event => {
-	switch (event.keyCode) {
-		case 37: // Левая стрелка
-			game.movePieceLeft();
-			view.renderMainScreen(game.getState());
-			break;
-		case 38: //	Верхняя стрелка
-			game.rotatePiece();
-			view.renderMainScreen(game.getState());
-			break;
-	    case 39: // Правая стрелка
-			game.movePieceRight();
-			view.renderMainScreen(game.getState());
-			break;
-		case 40: // Нижняя стрелка
-			game.movePieceDown();
-			view.renderMainScreen(game.getState());
-			break;
-	};
-}); 
+ 
 
-view.renderMainScreen(game.getState());

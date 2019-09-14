@@ -20,10 +20,10 @@ Z - figure: 7
 #### For figure rotation used that rotation system:
 
 
-![Иллюстрация к проекту](https://github.com/chackydude/tetris/raw/master/T2example_render.png)
+![Иллюстрация к проекту](https://github.com/chackydude/tetris/raw/master/T2example.png)
 
 #### Each figure has empty slotes for further rotation.
 
 
-![Иллюстрация к проекту](https://github.com/chackydude/tetris/raw/master/T4example.png)
+![Иллюстрация к проекту](https://github.com/chackydude/tetris/raw/master/T4_example.png)
 

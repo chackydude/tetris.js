@@ -1,19 +1,23 @@
+//Главный класс (1-238 строки) 
 class Game {
+	//Зависимость получения очков от количества убранных строк (lines)
 	static points = {
 		'1': 40,
 		'2': 100,
 		'3': 300,
 		'4': 1200
-	};
+	}; 
 
 	constructor() {
 		this.reset();
 	}
 
+	//Метод возвращающий значение уровня (каждые 10 убранных строк - новый уровень)
 	get level() {
 		return Math.floor(this.lines * 0.1); 
 	}
 
+	//Состояние игры на данный момент (уровень, очки, убранные строки, следующая фигура и игшровое поле)
 	getState() {
 		const pieceY = this.activePiece.y;
 		const pieceX = this.activePiece.x;
@@ -45,6 +49,7 @@ class Game {
 		};
 	}
 
+	//Возвращение всех свойств в первоначальное состояние
 	reset() {
 		this.score = 0;
 		this.lines = 0;
@@ -54,6 +59,7 @@ class Game {
 		this.nextPiece = this.createPiece();
 	}
 
+	//Метод создающий игровое поле (20х10)
 	createPlayfield() {
 		const playfield = [];
 
@@ -67,6 +73,7 @@ class Game {
 		return playfield;					
 	}
 
+	//Метод создающий рандомную фигуру на игровом поле
 	createPiece() {
 	 	const index = Math.floor(Math.random() * 7);
 	 	const type ='IJLOSTZ'[index];
@@ -134,6 +141,7 @@ class Game {
 		return piece;
 	}
 
+	//Методы для изменения координат фигур
 	movePieceLeft() {
 		this.activePiece.x -= 1;
 
@@ -168,6 +176,7 @@ class Game {
 		}
 	} 
 
+	//Метод для поворота фигуры
 	rotatePiece() {
 		this.rotateBlocks();
 
@@ -176,6 +185,7 @@ class Game {
 		}
 	}
 
+	//Метод меняющий конфигурацию фигуры, поворачивающий ее по часовой стрелке
 	rotateBlocks(clockwise = true) {
 		const blocks = this.activePiece.blocks;
 		const length = blocks.length;
@@ -201,6 +211,7 @@ class Game {
 		} 
 	}
 
+	//Метод для проверки наличия препятствий и возможности поворота фигуры
 	hasCollision() {
 		const blocks = this.activePiece.blocks;
 		const pieceY = this.activePiece.y;
@@ -218,7 +229,8 @@ class Game {
 
 		return false;
 	}
-
+ 
+  	//Метод фиксирующий фигуру, если та попадает на препятствие (другую фигуру или нижнюю границу игрового поля)
 	lockPiece() {
 		const blocks = this.activePiece.blocks;
 		const pieceY = this.activePiece.y;
@@ -233,6 +245,7 @@ class Game {
 		}
 	}
 
+	//Метод удаляющий полностью заполненные строки с игрового поля и возвращающий количство удаленных строк
 	clearLines() {
 		const rows = 20;
 		const colums = 10;
@@ -260,9 +273,9 @@ class Game {
 			this.playfield.unshift(new Array(colums).fill(0));
 		}
 
-		return lines.length;
-	}
+		return lines.length;	}
 
+	//Изменение счета игры
 	updateScore(clearLines) {
 		if (clearLines > 0) {
 			this.score += Game.points[clearLines] * (this.level + 1);
@@ -270,13 +283,17 @@ class Game {
 		}
 	}
 
+	//Создание новой фигуры
 	updatePieces() {
 		this.activePiece = this.nextPiece;
 		this.nextPiece = this.createPiece();
 	}
 };
 
+//Класс визуализации игрового поля, фигур и интерфейса
 class View {
+
+	//Возможные цвета фигур
 	static colors = { 
 		'1': 'cyan',
 		'2': 'blue',
@@ -287,6 +304,7 @@ class View {
 		'7': 'red'
 	};
 
+	//Инициальзация объектов 
 	constructor(element, width, height, rows, colums) {
 		this.element = element;
 		this.width = width; 
@@ -316,16 +334,19 @@ class View {
 		this.element.appendChild(this.canvas);
 	}
 
+	//отрисовка главного экрана
 	renderMainScreen(state) {
 		this.clearScreen();
 		this.renderPlayfield(state);	
 		this.renderPanel(state)
 	}
 	
+	//Метод удаляющий с поля предыдущую конфигурацию фигуры
 	clearScreen() {
 		 this.context.clearRect(0, 0, this.width, this.height);
 	}
 
+	//Отрисовка стартового экрана
 	renderStartScreen() {
 		this.context.fillStyle = 'white';
 		this.context.font = '18px "Press Start 2P"';
@@ -334,6 +355,7 @@ class View {
 		this.context.fillText('Press ENTER to Start', this.width / 2, this.height / 2);
 	}
 
+	//Отрисовка эрана паузы
 	renderPauseScreen() {
 
 		this.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -346,6 +368,7 @@ class View {
 		this.context.fillText('Press ENTER to Resume', this.width / 2, this.height / 2);
 	}
 
+	//Отрисовка эрана game over'a
 	renderEndScreen({score}) {
 		this.clearScreen();
 
@@ -360,6 +383,7 @@ class View {
 		this.context.fillText('Press ENTER to Restart', this.width / 2, this.height / 2 + 48);
 	}
 
+	//Отгрисовка игрового поля
 	renderPlayfield({ playfield} ) {
 	for (let y = 0; y < playfield.length; y++) {
 				const line = playfield[y];
@@ -385,6 +409,7 @@ class View {
 
 	}
 
+	//Отгрисовка интерфейса игровой панели
 	renderPanel({ level, score, lines, nextPiece }) {
 		this.context.textAlign = 'start';
 		this.context.textBaseline = 'top';
@@ -413,6 +438,7 @@ class View {
 		};
 	};
 
+	//Отрисовка фигуры на игровом поле 
 	renderBlock(x, y, width, height, color) {
 		this.context.fillStyle = color;
 		this.context.strokeStyle = 'black';
@@ -423,6 +449,7 @@ class View {
 	}
 }
 
+//Класс с обработчиком событий и 
 class Controller {
 	constructor(game, view) {
 		this.game = game;
@@ -441,24 +468,28 @@ class Controller {
 		this.updateView();
 	}
 
+	//Метод для возобновления игрового процесса (отображение MainScreen и текущего расположения фигур)
 	play() {
 		this.isPlaying = true;
 		this.startTimer();
 		this.updateView();
 	}
 
+	//Метод для остановки игрового процесса (отображение PauseScreen)
 	pause() {
 		this.isPlaying = false;
 		this.stopTimer();
 		this.updateView();
 	}
 
+	//Метод перезапуска игрового процесса (отображение начального MainScreen)
 	reset() {
 		this.game.reset();
 		this.play();
 
 	}
 
+	//Метод обновления конфигурации игрового поля и положения фигуры
 	updateView() {
 		const state = this.game.getState();
 
@@ -471,7 +502,10 @@ class Controller {
 		}
 	}
 
+	//Метод, перемещаюйщий фигуры вниз, с каждым уровнем скорость их "падения" возрастает
 	startTimer() {
+
+		//Переменная определяющая интервал, с которым фигура будет менять координату OY, т.е. двигаться вниз
 		const speed = 1000 - this.game.getState().level * 100;
 
 			if (!this.intervalId) {
@@ -481,6 +515,7 @@ class Controller {
 		}
 	}
 
+	//Метод для прекращения изменения OY координат фигуры
 	stopTimer() {
 			if (this.intervalId) {
 				clearInterval(this.intervalId);
@@ -488,6 +523,7 @@ class Controller {
 			}
 	}
 
+	//Отработчик событий 
 	handleKeydown(event) {
 		const state = this.game.getState();
 
@@ -520,7 +556,7 @@ class Controller {
 					break;
 		};
 	}
-
+	
 	handleKeyup(event) {
 		switch (event.keyCode) {
 				case 40: // Нижняя стрелка

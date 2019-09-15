@@ -349,7 +349,7 @@ class View {
 	//Отрисовка стартового экрана
 	renderStartScreen() {
 		this.context.fillStyle = 'white';
-		this.context.font = '18px "Press Start 2P"';
+		this.context.font = '35px "Pixel"';
 		this.context.textAlign = 'center';
 		this.context.textBaseline = 'middle';
 		this.context.fillText('Press ENTER to Start', this.width / 2, this.height / 2);
@@ -362,7 +362,7 @@ class View {
 		this.context.fillRect(0, 0, this.width, this.height);
 
 		this.context.fillStyle = 'white';
-		this.context.font = '18px "Press Start 2P"';
+		this.context.font = '35px "Pixel"';
 		this.context.textAlign = 'center';
 		this.context.textBaseline = 'middle';
 		this.context.fillText('Press ENTER to Resume', this.width / 2, this.height / 2);
@@ -375,7 +375,7 @@ class View {
 		this.context.fillStyle = 'rgba(0, 0, 0, 0.75)';
 		this.context.fillRect(0, 0, this.width, this.height);
 		this.context.fillStyle = 'white';
-		this.context.font = '18px "Press Start 2P"';
+		this.context.font = '35px "Pixel"';
 		this.context.textAlign = 'center';
 		this.context.textBaseline = 'middle';
 		this.context.fillText('GAME OVER', this.width / 2, this.height / 2 - 48);
@@ -414,7 +414,7 @@ class View {
 		this.context.textAlign = 'start';
 		this.context.textBaseline = 'top';
 		this.context.fillStyle = 'white';
-		this.context.font = '14px "Press start 2P"';
+		this.context.font = '20px "Pixel"';
 		
 		this.context.fillText(`Score: ${score}`, this.panelX, this.panelY + 0);	
 		this.context.fillText(`Lines: ${lines}`, this.panelX, this.panelY + 24);

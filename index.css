@@ -1,20 +1,33 @@
+@font-face {
+  font-family: 'Pixel';
+  src: url('NESCyrillic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
     margin: 0;
     background-color: black;
-    zoom: 86%;
 }
 
 #root {
     padding: 3rem;
-    text-align: center
+    text-align: center;
+    font-size: 25px;
 }
 
 #root h1 {
-    font-family: 'Press Start 2P', Consolas, monospace;
+    font-family: Pixel;
     color: white;
 }
 
 #root canvas {
     display: block;
     margin: 0 auto;
+    width: 100%;
+}
+
+#container {
+	width: 480px;
+	margin: auto;
 }

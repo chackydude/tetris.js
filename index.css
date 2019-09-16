@@ -13,7 +13,7 @@ body {
 #root {
     padding: 3rem;
     text-align: center;
-    font-size: 25px;
+    font-size: 3vh;
 }
 
 #root h1 {
@@ -24,7 +24,7 @@ body {
 #root canvas {
     display: block;
     margin: 0 auto;
-    width: 100%;
+    width: 26%;
 }
 
 #container {

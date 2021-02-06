@@ -11,23 +11,16 @@ body {
 }
 
 #root {
-    padding: 2rem;
-    text-align: center;
-    font-size: 2vw;
+    width: 315px;
+    margin: auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #root h1 {
-    font-family: Pixel;
+    font-family: Pixel, sans-serif;
     color: white;
-}
-
-#root canvas {
-    display: block;
-    margin: 0 auto;
-    width: 27%;
-}
-
-#container {
-	width: 480px;
-	margin: auto;
 }

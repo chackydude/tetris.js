@@ -352,7 +352,7 @@ class View {
 		this.context.font = '35px "Pixel"';
 		this.context.textAlign = 'center';
 		this.context.textBaseline = 'middle';
-		this.context.fillText('Press ENTER to Start', this.width / 2, this.height / 2);
+		this.context.fillText('ENTER to Start', this.width / 2, this.height / 2);
 	}
 
 	//Отрисовка эрана паузы
@@ -365,7 +365,7 @@ class View {
 		this.context.font = '35px "Pixel"';
 		this.context.textAlign = 'center';
 		this.context.textBaseline = 'middle';
-		this.context.fillText('Press ENTER to Resume', this.width / 2, this.height / 2);
+		this.context.fillText('ENTER to Resume', this.width / 2, this.height / 2);
 	}
 
 	//Отрисовка эрана game over'a
@@ -419,7 +419,7 @@ class View {
 		this.context.fillText(`Score: ${score}`, this.panelX, this.panelY + 0);	
 		this.context.fillText(`Lines: ${lines}`, this.panelX, this.panelY + 24);
 		this.context.fillText(`Level: ${level}`, this.panelX, this.panelY + 48);
-		this.context.fillText('Next:', this.panelX, this.panelY + 96);
+		this.context.fillText('Next:', this.panelX, this.panelY + 80);
 
 		for (let y = 0; y < nextPiece.blocks.length; y++) {
 			for (let x = 0; x < nextPiece.blocks[y].length; x++) {
@@ -569,7 +569,7 @@ class Controller {
 const root = document.querySelector('#root');
 
 const game = new Game();
-const view = new View(root, 480, 640, 20, 10);
+const view = new View(root, 310, 413, 20, 10);
 const controller = new Controller(game, view);
 
 window.game = game;

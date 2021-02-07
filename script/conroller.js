@@ -10,7 +10,6 @@ export default class Controller {
         document.addEventListener('keydown', this.handleKeydown.bind(this));
         document.addEventListener('keyup', this.handleKeyup.bind(this));
 
-
         // mobile controls
         view.arrows[0].addEventListener("click", () => {
             this.game.movePieceLeft();

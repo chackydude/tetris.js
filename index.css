@@ -10,7 +10,8 @@ body {
     background-color: black;
 }
 
-#root {
+
+.wrapper {
     width: 315px;
     margin: auto;
     height: 100vh;
@@ -20,7 +21,200 @@ body {
     align-items: center;
 }
 
+#root {
+    /*width: 315px;*/
+    /*margin: auto;*/
+    /*height: 100vh;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 #root h1 {
     font-family: Pixel, sans-serif;
     color: white;
+}
+
+/* FIXME: NEW */
+.control-area {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.control-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.control-panel-wrapper {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.control-panel__centre-arrows {
+    display: flex;
+    flex-direction: column;
+}
+
+.control-panel button, .control-panel__centre-arrows button {
+    height: 48px;
+    width: 48px;
+    margin: 2px;
+    border: none;
+    border-radius: 10px;
+    /* Vadim, sorry */
+    outline: none;
+    background-color: #525252;
+}
+
+@keyframes backgroundChange {
+    50% { 	background-color: #353535; }
+    100% { 	background-color: #3c3c3c; }
+}
+
+#button-up:active, #button-down:active, #button-left:active, #button-right:active, #pause-button:active {
+    animation: backgroundChange 0.1s;
+}
+
+#button-up, #button-down {
+    height: 30px;
+    border-radius: 7px;
+}
+
+#arrow-up, #arrow-down, #arrow-left, #arrow-right {
+    width: 0;
+    height: 0;
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+#arrow-up {
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 14px solid #dddddd;;
+}
+
+#arrow-down {
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 14px solid #dddddd;
+}
+
+#arrow-left {
+    border-top: 7px solid transparent;
+    border-right: 14px solid #dddddd;
+    border-bottom: 7px solid transparent;
+}
+
+#arrow-right {
+    border-top: 7px solid transparent;
+    border-left: 14px solid #dddddd;
+    border-bottom: 7px solid transparent;
+}
+
+.button-area {
+    width: auto;
+    text-align: right;
+    justify-self: flex-end;
+    align-self: center;
+}
+
+#pause-button {
+    height: 40px;
+    width: 40px;
+    border-radius: 7px;
+    border: 1px solid #838383;
+    outline: none;
+    background-color: #525252;
+    /*margin: 0 20px 20px 0;*/
+}
+
+#pause-button__icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#pause-button__icon div {
+    background-color: #dddddd;
+    border-radius: 2px;
+    height: 16px;
+    width: 6px;
+    margin: 1px;
+}
+
+#pause-wrapper, #game-over-wrapper {
+    position: absolute;
+    display: none;
+    place-items: center;
+    top: 0;
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.pause-wrapper__pause-window, .game-over-wrapper__game-over-window {
+    background-color: #000;
+    border: 2px solid white;
+    height: 150px;
+    width: 200px;
+    border-radius: 10px;
+    text-align: right;
+    padding: 5px 10px 5px 10px;
+}
+
+.game-over-wrapper__game-over-window {
+    height: 180px;
+}
+
+.pause-wrapper__pause-window button, .game-over-wrapper__game-over-window button {
+    background-color: #000;
+    font-size: 20px;
+    color: #fff;
+    font-family: Pixel, sans-serif;
+    font-weight: bold;
+}
+
+#pause-window__close-pause-button, #game-over-window__close-game-over-button {
+    border: none;
+}
+
+.pause-window__pause-menu, .game-over-window__game-over-menu {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70%;
+}
+
+.game-over-window__game-over-menu {
+    height: 60%;
+}
+
+.pause-window__pause-menu button, .game-over-window__game-over-menu button {
+    margin-bottom: 15px;
+    width: 80px;
+    border: none;
+}
+
+.game-over-title {
+    font-family: Pixel, sans-serif;
+    text-align: center;
+    color: #fff;
+    margin-top: 10px;
+}
+
+#user-score {
+    margin-top: -15px;
+}
+
+@media (max-width: 450px) {
+    .control-panel-wrapper {
+        margin-top: 15px;
+    }
 }

@@ -8,14 +8,71 @@
     <link rel="stylesheet" href="./index.css">
 </head>
 <body>
-      <!--   <div id="container"> -->
+         <div class="wrapper">
             <div id="root">
                 <h1>
                     <span style="color: red">T</span><span style="color: orange">E</span><span style="color: yellow">T</span><span style="color: green">R</span><span style="color: cyan">I</span><span style="color: purple">S</span>
                 </h1>
             </div>
 
-       <!--  </div> -->
-    <script src="./index.js"></script>
+
+              <div class="control-panel-wrapper">
+
+                  <div class="control-area">
+                      <div class="button-area">
+                          <button id="pause-button">
+                                <span id="pause-button__icon">
+                                    <div></div>
+                                    <div></div>
+                                </span>
+                          </button>
+                      </div>
+
+
+                      <div class="control-panel">
+                          <button id="button-left">
+                              <div id="arrow-left"></div>
+                          </button>
+                          <div class="control-panel__centre-arrows">
+                              <button id="button-up">
+                                  <div id="arrow-up"></div>
+                              </button>
+                              <button id="button-down">
+                                  <div id="arrow-down"></div>
+                              </button>
+                          </div>
+                          <button id="button-right">
+                              <div id="arrow-right"></div>
+                          </button>
+                      </div>
+
+                  </div>
+              </div>
+
+
+             <div id="pause-wrapper">
+                 <div class="pause-wrapper__pause-window pause-window">
+                     <button id="pause-window__close-pause-button">✖</button>
+                     <div class="pause-window__pause-menu pause-menu">
+                         <button class="pause-menu__restart-button">restart</button>
+                         <button class="pause-menu__menu-button">menu</button>
+                     </div>
+                 </div>
+             </div>
+             <div id="game-over-wrapper">
+                 <div class="game-over-wrapper__game-over-window game-over-window">
+                     <div class="game-over-title">
+                         <h2>Game Over</h2>
+                         <p id="user-score"></p>
+                     </div>
+                     <div class="game-over-window__game-over-menu game-over-menu">
+                         <button class="game-over-menu__restart-button">restart</button>
+                         <button class="game-over-menu__menu-button">menu</button>
+                     </div>
+                 </div>
+             </div>
+
+         </div>
+    <script src="script/index.js" type="module"></script>
 </body>
 </html>

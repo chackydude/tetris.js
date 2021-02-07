@@ -1,86 +1,56 @@
-//Класс с обработчиком событий и
 export default class Controller {
     constructor(game, view) {
+
         this.game = game;
         this.view = view;
         this.isPlaying = false;
         this.intervalId = null;
 
-        // TODO: DOM элементы во -> view
-
-        // desktop
+        // desktop controls
         document.addEventListener('keydown', this.handleKeydown.bind(this));
         document.addEventListener('keyup', this.handleKeyup.bind(this));
 
-        let arrows = [
-            document.getElementById("button-left"),
-            document.getElementById("button-up"),
-            document.getElementById("button-right"),
-            document.getElementById("button-down")
-        ]; // left -> up -> right -> down
 
-        // mobile
-        arrows[0].addEventListener("click", () => {
+        // mobile controls
+        view.arrows[0].addEventListener("click", () => {
             this.game.movePieceLeft();
             this.updateView();
         });
-        arrows[1].addEventListener("click", () => {
+        view.arrows[1].addEventListener("click", () => {
             this.game.rotatePiece();
             this.updateView();
         });
-       arrows[2].addEventListener("click", () => {
+        view.arrows[2].addEventListener("click", () => {
             this.game.movePieceRight();
             this.updateView();
         });
-        arrows[3].addEventListener("click", () => {
+        view.arrows[3].addEventListener("click", () => {
             this.game.movePieceDown();
             this.updateView();
         });
 
-        this.pauseDialog = document.getElementById("pause-wrapper");
-        this.gameOverDialog = document.getElementById("game-over-wrapper");
 
-        let pauseButton = document.querySelector("#pause-button");
-        pauseButton.addEventListener("click", () => {
+        view.pauseButton.addEventListener("click", () => {
             this.pause();
-            this.changePauseDialogVisibility();
+            this.view.changePauseDialogVisibility();
         });
 
-        let closePauseDialogButton = document.getElementById("pause-window__close-pause-button");
-        closePauseDialogButton.addEventListener("click", () => {
-            this.changePauseDialogVisibility();
+        view.closePauseDialogButton.addEventListener("click", () => {
+            this.view.changePauseDialogVisibility();
             this.play();
         });
 
-        let restartPauseDialogButton = document.querySelector(".pause-menu__restart-button");
-        restartPauseDialogButton.addEventListener("click", () => {
-            this.changePauseDialogVisibility();
+        view.restartPauseDialogButton.addEventListener("click", () => {
+            this.view.changePauseDialogVisibility();
             this.reset();
         });
 
-        let restartGameOverButton = document.querySelector(".game-over-menu__restart-button");
-        restartGameOverButton.addEventListener("click", () => {
-            this.closeGameOverDialog();
+        view.restartGameOverButton.addEventListener("click", () => {
+            this.view.closeGameOverDialog();
             this.reset();
         });
 
-        this.scorePlaceholder = document.getElementById("user-score");
-
-        // this.view.renderStartScreen();
         this.play();
-    }
-
-    changePauseDialogVisibility() {
-        this.pauseDialog.style.display = this.pauseDialog.style.display === "grid" ? "none" : "grid";
-    }
-
-    showGameOverDialog(score) {
-        this.gameOverDialog.style.display = "grid";
-        this.scorePlaceholder.innerText = `Score: ${score}`
-    }
-
-    closeGameOverDialog() {
-        this.gameOverDialog.style.display = "none";
     }
 
     update() {
@@ -88,33 +58,33 @@ export default class Controller {
         this.updateView();
     }
 
-    //Метод для возобновления игрового процесса (отображение MainScreen и текущего расположения фигур)
+    // resumes game, shows MainScreen with the current pieces
     play() {
         this.isPlaying = true;
         this.startTimer();
         this.updateView();
     }
 
-    //Метод для остановки игрового процесса (отображение PauseScreen)
+    // stops game, shows PauseScreen
     pause() {
         this.isPlaying = false;
         this.stopTimer();
         this.updateView();
     }
 
-    //Метод перезапуска игрового процесса (отображение начального MainScreen)
+    // restarts game, shows new clear MainScreen
     reset() {
         this.game.reset();
         this.play();
     }
 
-    //Метод обновления конфигурации игрового поля и положения фигуры
+    // updates view, based on state
     updateView() {
         const state = this.game.getState();
 
         if (state.isGameOver) {
             // this.view.renderEndScreen(state);
-            this.showGameOverDialog(state.score);
+            this.view.showGameOverDialog(state.score);
         } else if  (!this.isPlaying) {
             this.view.renderPauseScreen();
         } else {
@@ -122,7 +92,7 @@ export default class Controller {
         }
     }
 
-    //Метод, перемещаюйщий фигуры вниз, с каждым уровнем скорость их "падения" возрастает
+    // makes pieces running down, changing their speed which based on the current level
     startTimer() {
 
         //Переменная определяющая интервал, с которым фигура будет менять координату OY, т.е. двигаться вниз
@@ -135,7 +105,7 @@ export default class Controller {
         }
     }
 
-    //Метод для прекращения изменения OY координат фигуры
+    // freezes piece
     stopTimer() {
         if (this.intervalId) {
             clearInterval(this.intervalId);
@@ -143,12 +113,14 @@ export default class Controller {
         }
     }
 
-    //Отработчик событий
+    // user's clicks handler
     handleKeydown(event) {
         const state = this.game.getState();
 
-        switch (event.keyCode) {
-            case 13:// Enter
+        console.log(event.code);
+
+        switch (event.code) {
+            case "Enter":// Enter
                 if (state.isGameOver) {
                     this.reset();
                 } else if (this.isPlaying) {
@@ -157,19 +129,19 @@ export default class Controller {
                     this.play();
                 }
                 break;
-            case 37: // Левая стрелка
+            case "ArrowLeft": // Левая стрелка
                 this.game.movePieceLeft();
                 this.updateView();
                 break;
-            case 38: //	Верхняя стрелка
+            case "ArrowUp": //	Верхняя стрелка
                 this.game.rotatePiece();
                 this.updateView();
                 break;
-            case 39: // Правая стрелка
+            case "ArrowRight": // Правая стрелка
                 this.game.movePieceRight();
                 this.updateView();
                 break;
-            case 40: // Нижняя стрелка
+            case "ArrowDown": // Нижняя стрелка
                 this.stopTimer();
                 this.game.movePieceDown();
                 this.updateView();
@@ -178,8 +150,8 @@ export default class Controller {
     }
 
     handleKeyup(event) {
-        switch (event.keyCode) {
-            case 40: // Нижняя стрелка
+        switch (event.code) {
+            case "ArrowDown": // Нижняя стрелка
                 this.startTimer();
                 break;
         }

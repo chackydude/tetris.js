@@ -1,7 +1,6 @@
-//Класс визуализации игрового поля, фигур и интерфейса
 export default class View {
 
-    //Возможные цвета фигур
+    // available colors
     static colors = {
         '1': 'cyan',
         '2': 'blue',
@@ -12,7 +11,7 @@ export default class View {
         '7': 'red'
     };
 
-    //Инициализация объектов
+    // view objects init
     constructor(element, width, height, rows, colums) {
         this.element = element;
         this.width = width;
@@ -40,21 +39,35 @@ export default class View {
         this.panelHeight = this.height;
 
         this.element.appendChild(this.canvas);
+
+        // getting DOM control elements
+        this.arrows = [
+            document.getElementById("button-left"),
+            document.getElementById("button-up"),
+            document.getElementById("button-right"),
+            document.getElementById("button-down")
+        ]; // left -> up -> right -> down
+
+        this.pauseDialog = document.getElementById("pause-wrapper");
+        this.gameOverDialog = document.getElementById("game-over-wrapper");
+        this.pauseButton = document.querySelector("#pause-button");
+        this.closePauseDialogButton = document.getElementById("pause-window__close-pause-button");
+        this.restartPauseDialogButton = document.querySelector(".pause-menu__restart-button");
+        this.restartGameOverButton = document.querySelector(".game-over-menu__restart-button");
+        this.scorePlaceholder = document.getElementById("user-score");
     }
 
-    //отрисовка главного экрана
     renderMainScreen(state) {
         this.clearScreen();
         this.renderPlayfield(state);
         this.renderPanel(state)
     }
 
-    //Метод удаляющий с поля предыдущую конфигурацию фигуры
+    // removes last piece configuration (e. g. after rotation)
     clearScreen() {
         this.context.clearRect(0, 0, this.width, this.height);
     }
 
-    //Отрисовка стартового экрана
     renderStartScreen() {
         this.context.fillStyle = 'white';
         this.context.font = '35px "Pixel"';
@@ -63,7 +76,6 @@ export default class View {
         this.context.fillText('CLICK to Start', this.width / 2, this.height / 2);
     }
 
-    //Отрисовка эрана паузы
     renderPauseScreen() {
         //
         // this.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -76,7 +88,6 @@ export default class View {
         // this.context.fillText('ENTER to Resume', this.width / 2, this.height / 2);
     }
 
-    //Отрисовка эрана game over'a
     renderEndScreen({score}) {
         this.clearScreen();
 
@@ -91,7 +102,6 @@ export default class View {
         this.context.fillText('CLICK to Restart', this.width / 2, this.height / 2 + 48);
     }
 
-    //Отгрисовка игрового поля
     renderPlayfield({ playfield} ) {
         for (let y = 0; y < playfield.length; y++) {
             const line = playfield[y];
@@ -117,7 +127,7 @@ export default class View {
 
     }
 
-    //Отгрисовка интерфейса игровой панели
+    // game interface render - rightside panel
     renderPanel({ level, score, lines, nextPiece }) {
         this.context.textAlign = 'start';
         this.context.textBaseline = 'top';
@@ -146,7 +156,7 @@ export default class View {
         };
     };
 
-    //Отрисовка фигуры на игровом поле
+    // rendering piece on the playfield
     renderBlock(x, y, width, height, color) {
         this.context.fillStyle = color;
         this.context.strokeStyle = 'black';
@@ -154,5 +164,18 @@ export default class View {
 
         this.context.fillRect(x, y, width, height);
         this.context.strokeRect(x, y, width, height);
+    }
+
+    changePauseDialogVisibility() {
+        this.pauseDialog.style.display = this.pauseDialog.style.display === "grid" ? "none" : "grid";
+    }
+
+    showGameOverDialog(score) {
+        this.gameOverDialog.style.display = "grid";
+        this.scorePlaceholder.innerText = `Score: ${score}`
+    }
+
+    closeGameOverDialog() {
+        this.gameOverDialog.style.display = "none";
     }
 }

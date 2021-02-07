@@ -1,5 +1,5 @@
 export default class Game {
-    //Зависимость получения очков от количества убранных строк (lines)
+    // point rules
     static points = {
         '1': 40,
         '2': 100,
@@ -11,12 +11,12 @@ export default class Game {
         this.reset();
     }
 
-    //Метод возвращающий значение уровня (каждые 10 убранных строк - новый уровень)
+    // returns current level, 10 lines - new level
     get level() {
         return Math.floor(this.lines * 0.1);
     }
 
-    //Состояние игры на данный момент (уровень, очки, убранные строки, следующая фигура и игшровое поле)
+    // current game state
     getState() {
         const pieceY = this.activePiece.y;
         const pieceX = this.activePiece.x;
@@ -48,7 +48,7 @@ export default class Game {
         };
     }
 
-    //Возвращение всех свойств в первоначальное состояние
+    // default state
     reset() {
         this.score = 0;
         this.lines = 0;
@@ -58,7 +58,7 @@ export default class Game {
         this.nextPiece = this.createPiece();
     }
 
-    //Метод создающий игровое поле (20х10)
+    // creating 20x10 playfield
     createPlayfield() {
         const playfield = [];
 
@@ -72,7 +72,7 @@ export default class Game {
         return playfield;
     }
 
-    //Метод создающий рандомную фигуру на игровом поле
+    // creating random piece on the field
     createPiece() {
         const index = Math.floor(Math.random() * 7);
         const type ='IJLOSTZ'[index];
@@ -140,7 +140,7 @@ export default class Game {
         return piece;
     }
 
-    //Методы для изменения координат фигур
+    // piece control
     movePieceLeft() {
         this.activePiece.x -= 1;
 
@@ -175,7 +175,6 @@ export default class Game {
         }
     }
 
-    //Метод для поворота фигуры
     rotatePiece() {
         this.rotateBlocks();
 
@@ -184,7 +183,7 @@ export default class Game {
         }
     }
 
-    //Метод меняющий конфигурацию фигуры, поворачивающий ее по часовой стрелке
+    // changing piece config during the rotation
     rotateBlocks(clockwise = true) {
         const blocks = this.activePiece.blocks;
         const length = blocks.length;
@@ -210,7 +209,7 @@ export default class Game {
         }
     }
 
-    //Метод для проверки наличия препятствий и возможности поворота фигуры
+    // is able to rotate
     hasCollision() {
         const blocks = this.activePiece.blocks;
         const pieceY = this.activePiece.y;
@@ -229,7 +228,7 @@ export default class Game {
         return false;
     }
 
-    //Метод фиксирующий фигуру, если та попадает на препятствие (другую фигуру или нижнюю границу игрового поля)
+    // fixes piece near the other pieces or walls
     lockPiece() {
         const blocks = this.activePiece.blocks;
         const pieceY = this.activePiece.y;
@@ -244,7 +243,7 @@ export default class Game {
         }
     }
 
-    //Метод удаляющий полностью заполненные строки с игрового поля и возвращающий количство удаленных строк
+    // removing full lines on the playfield
     clearLines() {
         const rows = 20;
         const colums = 10;
@@ -274,7 +273,6 @@ export default class Game {
 
         return lines.length;	}
 
-    //Изменение счета игры
     updateScore(clearLines) {
         if (clearLines > 0) {
             this.score += Game.points[clearLines] * (this.level + 1);
@@ -282,7 +280,7 @@ export default class Game {
         }
     }
 
-    //Создание новой фигуры
+    // creating new figure
     updatePieces() {
         this.activePiece = this.nextPiece;
         this.nextPiece = this.createPiece();

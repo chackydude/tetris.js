@@ -8,9 +8,6 @@
 body {
     margin: 0;
     background-color: black;
-}
-
-.wrapper {
     width: 315px;
     margin: auto;
     display: flex;

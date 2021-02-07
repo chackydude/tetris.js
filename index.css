@@ -10,7 +10,6 @@ body {
     background-color: black;
 }
 
-
 .wrapper {
     width: 315px;
     margin: auto;
@@ -22,9 +21,6 @@ body {
 }
 
 #root {
-    /*width: 315px;*/
-    /*margin: auto;*/
-    /*height: 100vh;*/
     display: flex;
     flex-direction: column;
     justify-content: center;

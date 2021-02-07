@@ -2,6 +2,9 @@ import View from "./view.js";
 import Game from "./model.js";
 import Controller from "./conroller.js";
 
+// 20 - wrapper's margin-top, 100vh mobile bug
+document.body.style.height = (document.documentElement.clientHeight.toString() - 20)+ 'px';
+
 const root = document.querySelector('#root');
 
 const game = new Game();

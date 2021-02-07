@@ -39,9 +39,6 @@ export default class View {
         this.panelWidth = this.width / 3;
         this.panelHeight = this.height;
 
-        // 20 - wrapper's margin-top, 100vh mobile bug
-        document.body.style.height = (document.documentElement.clientHeight.toString() - 20)+ 'px';
-
         this.element.appendChild(this.canvas);
     }
 
